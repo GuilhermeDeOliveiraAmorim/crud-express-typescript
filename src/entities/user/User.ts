@@ -7,12 +7,16 @@ class User {
         this.lastName = lastName;
     }
 
-    getFirstName() {
+    public getFirstName() {
         return this.firstName;
     }
 
-    getLastName() {
+    public getLastName() {
         return this.lastName;
+    }
+
+    public getFullName() {
+        return this.getFirstName() + " " + this.getLastName();
     }
 }
 

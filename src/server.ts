@@ -1,18 +1,16 @@
-import express, { query } from "express";
-import { User } from "./entities/user/User";
-import { addUser } from "./entities/user/UserController";
+import express, { query, Request } from "express";
+import { router } from "./routers";
+import cors from "cors";
 
-const server = express();
+const app = express();
 
-server.get("/", (request, response) => {
-    const firstName = request.query.firstname;
-    const lastName = request.query.lastname;
-    const email = request.query.email;
-    const password = request.query.password;
+const corsOptions = {
+    origin: "http://localhost:3000",
+    optionsSuccessStatus: 200,
+};
 
-    const user = new User(firstName, lastName, email, password);
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(router);
 
-    return response.send(addUser(user));
-});
-
-export default server;
+export default app;

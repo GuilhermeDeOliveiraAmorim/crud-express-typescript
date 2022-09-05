@@ -1,3 +1,8 @@
+import { Actor } from "../actor/Actor";
+import { Director } from "../director/Director";
+import { Genre } from "../genre/Genre";
+import { Writer } from "../writer/Writer";
+
 class Movie {
     private _id!: string;
     public get id(): string {
@@ -55,6 +60,38 @@ class Movie {
         this._poster = val;
     }
 
+    private _actors!: Actor[];
+    public get actors(): Actor[] {
+        return this._actors;
+    }
+    public set actors(val: Actor[]) {
+        this._actors = val;
+    }
+
+    private _writers!: Writer[];
+    public get writers(): Writer[] {
+        return this._writers;
+    }
+    public set writers(val: Writer[]) {
+        this._writers = val;
+    }
+
+    private _directors!: Director[];
+    public get directors(): Director[] {
+        return this._directors;
+    }
+    public set directors(val: Director[]) {
+        this._directors = val;
+    }
+
+    private _genres!: Genre[];
+    public get genres(): Genre[] {
+        return this._genres;
+    }
+    public set genres(val: Genre[]) {
+        this._genres = val;
+    }
+
     constructor(
         id_: string,
         imdb_id_: string,
@@ -62,7 +99,11 @@ class Movie {
         year_: number,
         imdbRating_: number,
         youchooseRating_: number,
-        poster_: string
+        poster_: string,
+        actors_: Actor[],
+        writers_: Writer[],
+        directors_: Director[],
+        genres_: Genre[]
     ) {
         this.id = id_;
         this.imdb_id = imdb_id_;
@@ -71,6 +112,10 @@ class Movie {
         this.imdbRating = imdbRating_;
         this.youchooseRating = youchooseRating_;
         this.poster = poster_;
+        this.actors = actors_;
+        this.writers = writers_;
+        this.directors = directors_;
+        this.genres = genres_;
     }
 }
 

@@ -1,25 +1,119 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model actor_in_movie {
+    id       String  @id @default(uuid())
+    movie_id String?
+    actor_id String?
+    actors   Actor?  @relation(fields: [actor_id], references: [id], onUpdate: NoAction)
+    movies   Movie?  @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
+
+    @@index([id], map: "ix_actor_in_movie_id")
+}
+
+model Actor {
+    id             String           @id @default(uuid())
+    id_imdb_actor  String?          @db.VarChar
+    name           String?          @db.VarChar
+    headshot       String?          @db.VarChar
+    actor_in_movie actor_in_movie[]
+
+    @@index([id], map: "ix_actors_id")
+    @@map("actors")
+}
+
+model DirectorInMovie {
+    id          String    @id @default(uuid())
+    movie_id    String?
+    director_id String?
+    directors   Director? @relation(fields: [director_id], references: [id], onUpdate: NoAction)
+    movies      Movie?    @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
+
+    @@index([id], map: "ix_director_in_movie_id")
+    @@map("director_in_movie")
+}
+
+model Director {
+    id                String            @id @default(uuid())
+    id_imdb_director  String?           @db.VarChar
+    name              String?           @db.VarChar
+    headshot          String?           @db.VarChar
+    director_in_movie DirectorInMovie[]
+
+    @@index([id], map: "ix_directors_id")
+    @@map("directors")
+}
+
+model GenreInMovie {
+    id       String  @id @default(uuid())
+    movie_id String?
+    genre_id String?
+    genres   Genre?  @relation(fields: [genre_id], references: [id], onUpdate: NoAction)
+    movies   Movie?  @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
+
+    @@index([id], map: "ix_genre_in_movie_id")
+    @@map("genre_in_movie")
+}
+
+model Genre {
+    id             String         @id @default(uuid())
+    name           String?        @db.VarChar
+    genre_in_movie GenreInMovie[]
+
+    @@index([id], map: "ix_genres_id")
+    @@map("genres")
+}
+
+model Movie {
+    id                String            @id @default(uuid())
+    imdb_id           String?           @db.VarChar
+    title             String?           @db.VarChar
+    year              Int?
+    imdbRating        Float?
+    youchooseRating   Float?
+    poster            String?           @db.VarChar
+    actor_in_movie    actor_in_movie[]
+    director_in_movie DirectorInMovie[]
+    genre_in_movie    GenreInMovie[]
+    writer_in_movie   WriterInMovie[]
+
+    @@index([id], map: "ix_movies_id")
+    @@map("movies")
 }
 
 model User {
-  id String @id @default(uuid())
+    id       String  @id @default(uuid())
+    email    String? @db.VarChar
+    password String? @db.VarChar
 
-  firstName String
-  lastName  String
-  email     String @unique
-  password  String
+    @@index([id], map: "ix_users_id")
+    @@map("users")
+}
 
-  create_at DateTime @default(now())
-  update_at DateTime @updatedAt
+model WriterInMovie {
+    id        String  @id @default(uuid())
+    movie_id  String?
+    writer_id String?
+    movies    Movie?  @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
+    writers   Writer? @relation(fields: [writer_id], references: [id], onUpdate: NoAction)
 
-  @@map("users")
+    @@index([id], map: "ix_writer_in_movie_id")
+    @@map("writer_in_movie")
+}
+
+model Writer {
+    id              String          @id @default(uuid())
+    id_imdb_writer  String?         @db.VarChar
+    name            String?         @db.VarChar
+    headshot        String?         @db.VarChar
+    writer_in_movie WriterInMovie[]
+
+    @@index([id], map: "ix_writers_id")
+    @@map("writers")
 }

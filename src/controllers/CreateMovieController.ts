@@ -11,7 +11,7 @@ class CreateMovieController {
             title,
             year,
             poster,
-            actor_id,
+            id_actor,
             id_diretor,
             id_writer,
             id_genre,
@@ -26,7 +26,7 @@ class CreateMovieController {
                 year: year,
                 poster: poster,
                 actors: {
-                    create: [{ actor_id: actor_id }],
+                    create: [{ actor_id: id_actor }],
                 },
                 directors: {
                     create: [{ director_id: id_diretor }],

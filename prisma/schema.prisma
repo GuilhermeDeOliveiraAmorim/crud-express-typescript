@@ -8,113 +8,188 @@ datasource db {
 }
 
 model ActorInMovie {
-    id       String  @id @default(uuid())
-    movie_id String?
-    actor_id String?
-    actors   Actor?  @relation(fields: [actor_id], references: [id], onUpdate: NoAction)
-    movies   Movie?  @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
+    id         String   @id @default(uuid())
+    movie_id   String
+    actor_id   String
+    created_at DateTime @default(now())
+
+    actors Actor @relation(fields: [actor_id], references: [id], onUpdate: NoAction)
+    movies Movie @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
 
     @@index([id], map: "ix_actor_in_movie_id")
     @@map("actor_in_movie")
 }
 
 model Actor {
-    id             String         @id @default(uuid())
-    id_imdb_actor  String?        @unique @db.VarChar
-    name           String?        @db.VarChar
-    headshot       String?        @db.VarChar
-    actor_in_movie ActorInMovie[]
+    id            String   @id @default(uuid())
+    id_imdb_actor String   @unique @db.VarChar
+    name          String   @db.VarChar
+    headshot      String   @db.VarChar
+    created_at    DateTime @default(now())
+
+    movies ActorInMovie[]
 
     @@index([id], map: "ix_actors_id")
     @@map("actors")
 }
 
 model DirectorInMovie {
-    id          String    @id @default(uuid())
-    movie_id    String?
-    director_id String?
-    directors   Director? @relation(fields: [director_id], references: [id], onUpdate: NoAction)
-    movies      Movie?    @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
+    id          String   @id @default(uuid())
+    movie_id    String
+    director_id String
+    created_at  DateTime @default(now())
+
+    directors Director? @relation(fields: [director_id], references: [id], onUpdate: NoAction)
+    movies    Movie?    @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
 
     @@index([id], map: "ix_director_in_movie_id")
     @@map("director_in_movie")
 }
 
 model Director {
-    id                String            @id @default(uuid())
-    id_imdb_director  String?           @unique @db.VarChar
-    name              String?           @db.VarChar
-    headshot          String?           @db.VarChar
-    director_in_movie DirectorInMovie[]
+    id               String   @id @default(uuid())
+    id_imdb_director String   @unique @db.VarChar
+    name             String   @db.VarChar
+    headshot         String   @db.VarChar
+    created_at       DateTime @default(now())
+
+    movies DirectorInMovie[]
 
     @@index([id], map: "ix_directors_id")
     @@map("directors")
 }
 
 model GenreInMovie {
-    id       String  @id @default(uuid())
-    movie_id String?
-    genre_id String?
-    genres   Genre?  @relation(fields: [genre_id], references: [id], onUpdate: NoAction)
-    movies   Movie?  @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
+    id         String   @id @default(uuid())
+    movie_id   String
+    genre_id   String
+    created_at DateTime @default(now())
+
+    genres Genre @relation(fields: [genre_id], references: [id], onUpdate: NoAction)
+    movies Movie @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
 
     @@index([id], map: "ix_genre_in_movie_id")
     @@map("genre_in_movie")
 }
 
 model Genre {
-    id             String         @id @default(uuid())
-    name           String?        @unique() @db.VarChar
-    genre_in_movie GenreInMovie[]
+    id         String   @id @default(uuid())
+    name       String   @unique() @db.VarChar
+    created_at DateTime @default(now())
+
+    movies GenreInMovie[]
 
     @@index([id], map: "ix_genres_id")
     @@map("genres")
 }
 
 model Movie {
-    id              String            @id @default(uuid())
-    imdb_id         String?           @unique @db.VarChar
-    title           String?           @db.VarChar
-    year            Int?
-    imdbRating      Float?
-    youchooseRating Float?
-    poster          String?           @db.VarChar
-    actors          ActorInMovie[]
-    directors       DirectorInMovie[]
-    genres          GenreInMovie[]
-    writers         WriterInMovie[]
+    id              String   @id @default(uuid())
+    imdb_id         String   @unique @db.VarChar
+    title           String   @db.VarChar
+    year            Int
+    imdbRating      Float
+    youchooseRating Float
+    poster          String   @db.VarChar
+    created_at      DateTime @default(now())
+
+    actors    ActorInMovie[]
+    directors DirectorInMovie[]
+    genres    GenreInMovie[]
+    writers   WriterInMovie[]
+    lists     MovieInList[]
 
     @@index([id], map: "ix_movies_id")
     @@map("movies")
 }
 
 model User {
-    id       String  @id @default(uuid())
-    email    String? @db.VarChar
-    password String? @db.VarChar
+    id         String   @id @default(uuid())
+    email      String   @db.VarChar
+    password   String   @db.VarChar
+    created_at DateTime @default(now())
+
+    lists List[]
 
     @@index([id], map: "ix_users_id")
     @@map("users")
 }
 
 model WriterInMovie {
-    id        String  @id @default(uuid())
-    movie_id  String?
-    writer_id String?
-    movies    Movie?  @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
-    writers   Writer? @relation(fields: [writer_id], references: [id], onUpdate: NoAction)
+    id         String   @id @default(uuid())
+    movie_id   String
+    writer_id  String
+    created_at DateTime @default(now())
+
+    movies  Movie  @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
+    writers Writer @relation(fields: [writer_id], references: [id], onUpdate: NoAction)
 
     @@index([id], map: "ix_writer_in_movie_id")
     @@map("writer_in_movie")
 }
 
 model Writer {
-    id              String          @id @default(uuid())
-    id_imdb_writer  String?         @unique @db.VarChar
-    name            String?         @db.VarChar
-    headshot        String?         @db.VarChar
-    writer_in_movie WriterInMovie[]
+    id             String   @id @default(uuid())
+    id_imdb_writer String   @unique @db.VarChar
+    name           String   @db.VarChar
+    headshot       String   @db.VarChar
+    created_at     DateTime @default(now())
+
+    movies WriterInMovie[]
 
     @@index([id], map: "ix_writers_id")
     @@map("writers")
+}
+
+model List {
+    id         String   @id @default(uuid())
+    name       String   @unique @db.VarChar
+    headshot   String   @db.VarChar
+    user_id    String
+    created_at DateTime @default(now())
+
+    movies MovieInList[]
+    tags   TagInList[]
+
+    user User @relation(fields: [user_id], references: [id])
+
+    @@index([id], map: "ix_lists_id")
+    @@map("lists")
+}
+
+model MovieInList {
+    id         String   @id @default(uuid())
+    movie_id   String
+    list_id    String
+    created_at DateTime @default(now())
+
+    movies Movie @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
+    lists  List  @relation(fields: [list_id], references: [id], onUpdate: NoAction)
+
+    @@index([id], map: "ix_movie_in_list_id")
+    @@map("movie_in_list")
+}
+
+model Tag {
+    id         String   @id @default(uuid())
+    name       String   @unique @db.VarChar
+    created_at DateTime @default(now())
+
+    lists TagInList[]
+
+    @@index([id], map: "ix_tags_id")
+    @@map("tags")
+}
+
+model TagInList {
+    id         String   @id @default(uuid())
+    tag_id     String
+    list_id    String
+    created_at DateTime @default(now())
+
+    tags  Tag  @relation(fields: [tag_id], references: [id], onUpdate: NoAction)
+    lists List @relation(fields: [list_id], references: [id], onUpdate: NoAction)
+
+    @@index([id], map: "ix_tag_in_list_id")
+    @@map("tag_in_list")
 }

@@ -7,7 +7,7 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model actor_in_movie {
+model ActorInMovie {
     id       String  @id @default(uuid())
     movie_id String?
     actor_id String?
@@ -15,14 +15,15 @@ model actor_in_movie {
     movies   Movie?  @relation(fields: [movie_id], references: [id], onUpdate: NoAction)
 
     @@index([id], map: "ix_actor_in_movie_id")
+    @@map("actor_in_movie")
 }
 
 model Actor {
-    id             String           @id @default(uuid())
-    id_imdb_actor  String?          @db.VarChar
-    name           String?          @db.VarChar
-    headshot       String?          @db.VarChar
-    actor_in_movie actor_in_movie[]
+    id             String         @id @default(uuid())
+    id_imdb_actor  String?        @unique @db.VarChar
+    name           String?        @db.VarChar
+    headshot       String?        @db.VarChar
+    actor_in_movie ActorInMovie[]
 
     @@index([id], map: "ix_actors_id")
     @@map("actors")
@@ -41,7 +42,7 @@ model DirectorInMovie {
 
 model Director {
     id                String            @id @default(uuid())
-    id_imdb_director  String?           @db.VarChar
+    id_imdb_director  String?           @unique @db.VarChar
     name              String?           @db.VarChar
     headshot          String?           @db.VarChar
     director_in_movie DirectorInMovie[]
@@ -63,7 +64,7 @@ model GenreInMovie {
 
 model Genre {
     id             String         @id @default(uuid())
-    name           String?        @db.VarChar
+    name           String?        @unique() @db.VarChar
     genre_in_movie GenreInMovie[]
 
     @@index([id], map: "ix_genres_id")
@@ -71,17 +72,17 @@ model Genre {
 }
 
 model Movie {
-    id                String            @id @default(uuid())
-    imdb_id           String?           @db.VarChar
-    title             String?           @db.VarChar
-    year              Int?
-    imdbRating        Float?
-    youchooseRating   Float?
-    poster            String?           @db.VarChar
-    actor_in_movie    actor_in_movie[]
-    director_in_movie DirectorInMovie[]
-    genre_in_movie    GenreInMovie[]
-    writer_in_movie   WriterInMovie[]
+    id              String            @id @default(uuid())
+    imdb_id         String?           @unique @db.VarChar
+    title           String?           @db.VarChar
+    year            Int?
+    imdbRating      Float?
+    youchooseRating Float?
+    poster          String?           @db.VarChar
+    actors          ActorInMovie[]
+    directors       DirectorInMovie[]
+    genres          GenreInMovie[]
+    writers         WriterInMovie[]
 
     @@index([id], map: "ix_movies_id")
     @@map("movies")
@@ -109,7 +110,7 @@ model WriterInMovie {
 
 model Writer {
     id              String          @id @default(uuid())
-    id_imdb_writer  String?         @db.VarChar
+    id_imdb_writer  String?         @unique @db.VarChar
     name            String?         @db.VarChar
     headshot        String?         @db.VarChar
     writer_in_movie WriterInMovie[]

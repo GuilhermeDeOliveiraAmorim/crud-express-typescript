@@ -103,7 +103,7 @@ model Movie {
     @@map("movies")
 }
 
-model User {
+model Chooser {
     id         String   @id @default(uuid())
     email      String   @db.VarChar
     password   String   @db.VarChar
@@ -111,8 +111,8 @@ model User {
 
     lists List[]
 
-    @@index([id], map: "ix_users_id")
-    @@map("users")
+    @@index([id], map: "ix_choosers_id")
+    @@map("chooser")
 }
 
 model WriterInMovie {
@@ -145,13 +145,13 @@ model List {
     id         String   @id @default(uuid())
     name       String   @unique @db.VarChar
     headshot   String   @db.VarChar
-    user_id    String
+    chooser_id String
     created_at DateTime @default(now())
 
     movies MovieInList[]
     tags   TagInList[]
 
-    user User @relation(fields: [user_id], references: [id])
+    chooser Chooser @relation(fields: [chooser_id], references: [id])
 
     @@index([id], map: "ix_lists_id")
     @@map("lists")

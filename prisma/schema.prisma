@@ -90,6 +90,7 @@ model Movie {
     year            Int
     imdbRating      Float
     youchooseRating Float
+    movie_clicked   Int      @default(0)
     poster          String   @db.VarChar
     created_at      DateTime @default(now())
 

@@ -15,6 +15,7 @@ import { GetListController } from "./controllers/list/GetListController";
 import { CreateMovieController } from "./controllers/movie/CreateMovieController";
 import { GetMoviesController } from "./controllers/movie/GetMoviesController";
 import { GetMovieController } from "./controllers/movie/GetMovieController";
+import { UpdateYouChooseRating } from "./controllers/movie/UpdateYouChooseRating";
 
 import { CreateWriterController } from "./controllers/writer/CreateWriterController";
 import { CreateTagController } from "./controllers/tag/CreateTagController";
@@ -36,6 +37,7 @@ const getList = new GetListController();
 const createMovie = new CreateMovieController();
 const getMovies = new GetMoviesController();
 const getMovie = new GetMovieController();
+const updateYouChooseRating = new UpdateYouChooseRating();
 
 const createTag = new CreateTagController();
 
@@ -58,6 +60,7 @@ router.post("/tag", createTag.handle);
 router.post("/movie", createMovie.handle);
 router.get("/movie", getMovies.handle);
 router.get("/movie/:movie_id", getMovie.handle);
+router.patch("/movie/rating/:movie_id", updateYouChooseRating.handle);
 
 router.post("/writer", createWriter.handle);
 

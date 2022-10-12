@@ -3,23 +3,42 @@ import { prismaClient } from "../../database/prismaClient";
 
 class CreateListController {
     async handle(request: Request, response: Response) {
-        const { name, headshot, user_id, movies, tags } = request.body;
+        const { name, headshot, chooser_id, arrTags, arrMovies } = request.body;
 
-        const movie = await prismaClient.list.create({
+        const list = await prismaClient.list.create({
             data: {
                 name: name,
                 headshot: headshot,
-                user_id: user_id,
-                movies: {
-                    createMany: movies,
-                },
-                // tags: {
-                //     create: [{ tag_id: tags }],
-                // },
+                chooser_id: chooser_id,
             },
         });
 
-        return response.json(movie);
+        const list_id = list.id;
+
+        arrTags.map((tag: any) => {
+            tag["list_id"] = list_id;
+        });
+
+        arrMovies.map((movie: any) => {
+            movie["list_id"] = list_id;
+        });
+
+        const createManyTagsInList = await prismaClient.tagInList.createMany({
+            data: arrTags,
+            skipDuplicates: true,
+        });
+
+        const createManyMoviesInList =
+            await prismaClient.movieInList.createMany({
+                data: arrMovies,
+                skipDuplicates: true,
+            });
+
+        return response.json([
+            list,
+            createManyTagsInList,
+            createManyMoviesInList,
+        ]);
     }
 }
 

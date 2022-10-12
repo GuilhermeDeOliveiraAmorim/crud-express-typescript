@@ -1,18 +1,18 @@
 import { Movie } from "../movie/Movie";
 import { Tag } from "../tag/Tag";
-import { User } from "../user/User";
+import { Chooser } from "../chooser/Chooser";
 
 class List {
     name: string;
     headshot!: string;
-    user: User;
+    chooser: Chooser;
     movies: Movie[];
     tags: Tag[];
 
-    constructor(name: string, headshot: string, user: User) {
+    constructor(name: string, headshot: string, chooser: Chooser) {
         this.name = name;
         this.headshot = headshot;
-        this.user = user;
+        this.chooser = chooser;
         this.movies = [];
         this.tags = [];
     }

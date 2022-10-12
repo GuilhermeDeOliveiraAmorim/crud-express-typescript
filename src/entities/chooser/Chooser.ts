@@ -1,4 +1,4 @@
-class User {
+class Chooser {
     private _id!: string;
     public get id(): string {
         return this._id;
@@ -30,4 +30,4 @@ class User {
     }
 }
 
-export { User };
+export { Chooser };

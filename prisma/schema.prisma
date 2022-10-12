@@ -104,15 +104,16 @@ model Movie {
 }
 
 model Chooser {
-    id         String   @id @default(uuid())
-    email      String   @db.VarChar
-    password   String   @db.VarChar
-    created_at DateTime @default(now())
+    id           String   @id @default(uuid())
+    email        String   @db.VarChar
+    chooser_name String   @db.VarChar
+    password     String   @db.VarChar
+    created_at   DateTime @default(now())
 
     lists List[]
 
     @@index([id], map: "ix_choosers_id")
-    @@map("chooser")
+    @@map("choosers")
 }
 
 model WriterInMovie {

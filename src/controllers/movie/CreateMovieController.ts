@@ -6,7 +6,6 @@ class CreateMovieController {
         const {
             imdb_id,
             imdbRating,
-            youchooseRating,
             title,
             year,
             poster,
@@ -19,8 +18,7 @@ class CreateMovieController {
         const movie = await prismaClient.movie.create({
             data: {
                 imdb_id: imdb_id,
-                imdbRating: imdbRating,
-                youchooseRating: youchooseRating,
+                imdb_rating: imdbRating,
                 title: title,
                 year: year,
                 poster: poster,

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { prismaClient } from "../../database/prismaClient";
 
-class GetMoviesController {
+class GetTwoMoviesController {
     async handle(request: Request, response: Response) {
         const movie = await prismaClient.movie.findMany({
             include: {
@@ -34,4 +34,4 @@ class GetMoviesController {
     }
 }
 
-export { GetMoviesController };
+export { GetTwoMoviesController };

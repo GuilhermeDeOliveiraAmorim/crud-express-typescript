@@ -84,15 +84,14 @@ model Genre {
 }
 
 model Movie {
-    id              String   @id @default(uuid())
-    imdb_id         String   @unique @db.VarChar
-    title           String   @db.VarChar
-    year            Int
-    imdbRating      Float
-    youchooseRating Float
-    movie_clicked   Int      @default(0)
-    poster          String   @db.VarChar
-    created_at      DateTime @default(now())
+    id            String   @id @default(uuid())
+    imdb_id       String   @unique @db.VarChar
+    title         String   @db.VarChar
+    year          Int
+    imdb_rating   Float
+    movie_clicked Int      @default(0)
+    poster        String   @db.VarChar
+    created_at    DateTime @default(now())
 
     actors    ActorInMovie[]
     directors DirectorInMovie[]
